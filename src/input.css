@@ -1,25 +1,67 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
+@theme {
+  --color-brand: #D97706;
+  --color-brand-dark: #B45309;
+  --color-brand-light: #FEF3C7;
+  --color-ink: #1F1135;
+  --color-muted: #78716C;
+  --color-ground: #FAF7F2;
+  --color-line: #E7E5E4;
+  
+  --font-display: "Cinzel", "Georgia", serif;
+  --font-body: "Inter", Arial, sans-serif;
+  
+  --radius-card: 20px;
+}
+
+/* Custom Components for Yu-Gi-Oh! Dex */
 @layer components {
-  /* Bouton principal */
   .btn-primary {
-    @apply h-12 px-6 rounded-xl bg-brand text-white font-bold;
+    height: 3rem; /* h-12 */
+    padding-left: 1.5rem; /* px-6 */
+    padding-right: 1.5rem;
+    border-radius: var(--radius-card);
+    background-color: var(--color-brand);
+    color: #ffffff;
+    font-weight: 700;
   }
 
-  /* Bouton secondaire (contour) */
   .btn-outline {
-    @apply h-11 px-4 rounded-xl border-2 border-ink bg-white text-ink font-bold outline-none;
+    height: 2.75rem; /* h-11 */
+    padding-left: 1rem; /* px-4 */
+    padding-right: 1rem;
+    border-radius: var(--radius-card);
+    border-width: 2px;
+    border-color: var(--color-ink);
+    background-color: #ffffff;
+    color: var(--color-ink);
+    font-weight: 700;
+    outline: none;
   }
 
-  /* Bouton de filtre par type */
   .chip {
-    @apply h-11 px-5 rounded-full border-2 border-line bg-white text-ink font-bold outline-none;
+    height: 2.75rem; /* h-11 */
+    padding-left: 1.25rem; /* px-5 */
+    padding-right: 1.25rem;
+    border-radius: 9999px;
+    border-width: 2px;
+    border-color: var(--color-line);
+    background-color: #ffffff;
+    color: var(--color-ink);
+    font-weight: 700;
+    outline: none;
   }
 
-  /* Champ de formulaire */
   .field {
-    @apply h-12 rounded-xl border-2 border-line bg-white px-3 text-base outline-none;
+    height: 3rem; /* h-12 */
+    border-radius: var(--radius-card);
+    border-width: 2px;
+    border-color: var(--color-line);
+    background-color: #ffffff;
+    padding-left: 0.75rem; /* px-3 */
+    padding-right: 0.75rem;
+    font-size: 1rem;
+    outline: none;
   }
 }
