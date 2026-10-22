@@ -54,7 +54,9 @@ function showCardDetails(cardData) {
   }
 }
 
-var cards = document.querySelector("#Ccards");
+// Add cards
+
+const cards = document.querySelector("#Ccards");
 if (cards && typeof creatures !== 'undefined') {
   cards.innerHTML = "";
 
@@ -73,6 +75,8 @@ if (cards && typeof creatures !== 'undefined') {
           </article>`;
 })};
 
+// card click listener
+
   cards.addEventListener('click', (event) => {
     if (event.target.closest('button') && event.target.closest('button').classList.contains('card-btn')) {
       return; 
@@ -89,3 +93,85 @@ if (cards && typeof creatures !== 'undefined') {
     }
 });
 
+// Validation
+const form = document.querySelector(`#creature-form`);
+
+const regexPatterns = {
+    id: /^#\d{3}$/,                  
+    name: /^[a-zA-Z\s]{2,30}$/,   
+    level: /^[a-zA-Z0-9\s]{2,20}$/,  
+    stat1: /^\d{1,3}$/,              
+    stat2: /^\d{1,3}$/,
+    stat3: /^\d{1,3}$/,
+    image:/^https?:\/\/.+\.(png|jpg|jpeg|webp|gif)$/i,         
+    description: /^[\s\S]{10,200}$/  
+};
+
+const errorMessages = {
+    id: "The format must be # followed by 3 digits (e.g., #010)",
+    name: "The name must contain only letters (2-30 characters).",
+    level: "Please enter a valid level.",
+    stat1: "The statistic must be a number between 0 and 999.",
+    stat2: "The statistic must be a number between 0 and 999.",
+    stat3: "The statistic must be a number between 0 and 999.",
+    image: "Please enter a valid image link (starting with https://).",
+    description: "The description must contain between 10 and 200 characters."
+};
+
+form.addEventListener(`focusout`, (event) => {
+  const input = event.target
+  const fieldName = input.name
+
+  if (!regexPatterns[fieldName]) return;
+
+  validateField(input, fieldName);
+})
+
+function validateField(input, fieldName) {
+  const pattern = regexPatterns[fieldName];
+  const errorSpan = input.nextElementSibling;
+  if (input.value == "") {
+    if(errorSpan && errorSpan.classList.contains(`error-message`)) {
+      errorSpan.textContent = "";
+      }
+  }
+  else if (pattern.test(input.value.trim())) {
+    input.classList.remove(`border-red-500`);
+    input.classList.add(`border-green-500`)
+    if(errorSpan && errorSpan.classList.contains(`error-message`)) {
+      errorSpan.textContent = "";
+    }
+    return true
+  } else {
+    input.classList.remove(`border-green-500`);
+    input.classList.add(`border-red-500`);
+    if(errorSpan && errorSpan.classList.contains(`error-message`)) {
+       errorSpan.textContent = errorMessages[fieldName];
+       errorSpan.style.color = "red"
+    }
+    return false
+  }
+}
+
+form.addEventListener(`submit`, (event) => {
+  event.preventDefault();
+
+  let isFormValid = true
+
+  Object.keys(regexPatterns).forEach(fieldName => {
+    const input = form.elements[fieldName];
+    if(input) {
+      const isValid = validateField(input, fieldName);
+      if(!isValid) {
+        isFormValid = false
+      }
+    }
+  })
+
+  if (isFormValid) {
+    console.log("Informations are valid! Add the creature...");
+
+  } else {
+    console.log("Rectify the errors before submiting.")
+  }
+  });
