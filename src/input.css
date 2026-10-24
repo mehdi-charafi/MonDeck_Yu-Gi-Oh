@@ -65,3 +65,8 @@
     outline: none;
   }
 }
+
+body {
+  background-image: url("../images/bg.webp");
+  
+}
