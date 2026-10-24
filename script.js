@@ -1,10 +1,34 @@
-// Add cards
-
+// Cards List
 const cards = document.querySelector("#Ccards");
+cardsList(creatures)
+
+
+//filter
+let filter = document.querySelector("#filter")
+filter.addEventListener("change", (event) => {
+  if(event.target.value == "Tous") {
+    cardsList(creatures)
+  } else {
+    let filterValue = creatures.filter((c) => c.type == event.target.value)
+    cardsList(filterValue)
+  }
+})
+
+//search
+let search = document.querySelector("#search")
+search.addEventListener("input", (event) => {
+  let query = event.target.value.toLowerCase().trim();
+let match = creatures.filter((c) => c.name.toLowerCase().includes(query));
+cardsList(match);
+})
+
+//cardsList Function
+function cardsList(data) {
+
 if (cards && typeof creatures !== 'undefined') {
   cards.innerHTML = "";
 
-  creatures.forEach(c => {
+  data.forEach(c => {
       cards.innerHTML += `<article class="relative flex flex-col gap-3 rounded-2xl p-3 pb-4 border border-gray-800 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-yellow-500/50 hover:shadow-2xl cursor-pointer bg-[#12161c] bg-cover bg-center" data-id="${c.id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/bg.png')">
       
       <div class="relative flex items-center justify-center rounded-xl overflow-hidden">
@@ -18,6 +42,7 @@ if (cards && typeof creatures !== 'undefined') {
 
     </article>`;
 })};
+}
 
 // show card detail
 
@@ -172,37 +197,49 @@ form.addEventListener(`submit`, (event) => {
 });
 
 
+  // دالة الإضافة لفريقك
   function addToMyCards(cardData) {
+    const mycardsSection = document.getElementById('mycards');
+    if (!mycardsSection || mycardsSection.children.length >= 6) return;
+    
+    const existingCards = mycardsSection.querySelectorAll("#card-item");
+    const isAlreadyAdded = Array.from(existingCards).some((d) => d.querySelector("span").textContent.includes(cardData.id));
+    if (isAlreadyAdded) return;
+    
+    mycardsSection.innerHTML += `
+       <div id="card-item" class="w-full min-h-[220px] border border-gray-700 rounded-lg p-2"> 
+        <div class="flex items-center justify-between relative z-10">
+          <span class="font-mono text-xs font-bold text-yellow-400 bg-black/70 px-2.5 py-1 rounded border border-yellow-500/30">${cardData.id} · Détail</span>
+          <button type="button" aria-label="Remove card" class="w-8 h-8 flex items-center justify-center text-white bg-black/50 hover:bg-black/80 rounded-full transition-colors cursor-pointer">✕</button>
+        </div>
+
+        <div class="relative flex items-center justify-center rounded-xl overflow-hidden z-10">
+          <img src="${cardData.image}" alt="${cardData.name}" class="w-full h-auto object-contain rounded-lg">
+        </div>
+      </div>
+    `;
+    
+    updateTeamCount();
+  }
+
+  function updateTeamCount() {
+    const mycardsSection = document.getElementById('mycards');
+    let count = document.querySelectorAll(".team-count");
+    if (mycardsSection && count) {
+      count.textContent = mycardsSection.children.length;
+    }
+  }
+
   const mycardsSection = document.getElementById('mycards');
-  if (!mycardsSection || mycardsSection.children.length >= 6) return;
-  const existingCards = mycardsSection.querySelectorAll("#card-item")
-  const isAlreadyAdded = Array.from(existingCards).some((d) => d.querySelector("span").textContent.includes(cardData.id))
-  if(isAlreadyAdded) return;
+  if (mycardsSection) {
+    mycardsSection.addEventListener('click', (event) => {
+      const removeBtn = event.target.closest('button[aria-label="Remove card"]');
+      if (!removeBtn) return;
 
-  mycardsSection.innerHTML += `
-     <div id="card-item" class="w-full min-h-[220px] border border-gray-700 rounded-lg"> 
-      <div class="flex items-center justify-between relative z-10">
-        <span class="font-mono text-xs font-bold text-yellow-400 bg-black/70 px-2.5 py-1 rounded border border-yellow-500/30">${cardData.id} · Détail</span>
-        <button type="button" aria-label="Remove card" class="w-8 h-8 flex items-center justify-center text-white bg-black/50 hover:bg-black/80 rounded-full transition-colors cursor-pointer">✕</button>
-      </div>
-
-      <div class="relative flex items-center justify-center rounded-xl overflow-hidden z-10">
-        <img src="${cardData.image}" alt="${cardData.name}" class="w-full h-auto object-contain rounded-lg">
-      </div>
-
-      </div>
-  `;
-  const closeBtn = mycardsSection.querySelectorAll('button[aria-label="Remove card"]');
-  if (closeBtn) {
-    closeBtn.forEach((b) => b.addEventListener('click', (event) => {
-      event.target.closest("#card-item").remove();
-    }))
+      const cardItem = removeBtn.closest('#card-item');
+      if (cardItem) {
+        cardItem.remove();
+        updateTeamCount();
+      }
+    });
   }
-  }
-
-
-
-
-
-
-  
