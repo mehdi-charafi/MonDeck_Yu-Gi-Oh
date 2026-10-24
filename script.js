@@ -91,16 +91,17 @@ function showCardDetails(cardData) {
   }
 }
 
+// Add mew cards to the list
+
 // Validation
 const form = document.querySelector(`#creature-form`);
 
 const regexPatterns = {
     id: /^#\d{3}$/,                  
     name: /^[a-zA-Z\s]{2,30}$/,   
-    level: /^[a-zA-Z0-9\s]{2,20}$/,  
-    stat1: /^\d{1,3}$/,              
-    stat2: /^\d{1,3}$/,
-    stat3: /^\d{1,3}$/,
+    level: /^([0-9]|1[0-2])$/,  
+    attack: /^([0-9]|[1-9][0-9]{1,2}|[1-4][0-9]{3}|5000)$/,              
+    defence: /^([0-9]|[1-9][0-9]{1,2}|[1-4][0-9]{3}|5000)$/,
     image:/^https?:\/\/.+\.(png|jpg|jpeg|webp|gif)$/i,         
     description: /^[\s\S]{10,200}$/  
 };
@@ -130,6 +131,8 @@ function validateField(input, fieldName) {
   const errorSpan = input.nextElementSibling;
   if (input.value == "") {
     if(errorSpan && errorSpan.classList.contains(`error-message`)) {
+      input.classList.remove(`border-red-500`);
+      input.classList.remove(`border-green-500`);
       errorSpan.textContent = "";
       }
   }
@@ -166,13 +169,38 @@ form.addEventListener(`submit`, (event) => {
     }
   })
 
-  if (isFormValid) {
-    console.log("Informations are valid! Add the creature...");
-
-  } else {
+  if (!isFormValid) {
+    
     console.log("Rectify the errors before submiting.")
+    return;
   }
+
+
+  const formData = new FormData(form);
+  
+  const newCard = {
+    id: formData.get("id"),
+    name: formData.get("name"),
+    type: formData.get("type"),
+    level: formData.get("level"),
+    stats: {attack: formData.get("attack"), defence: formData.get("defence")},
+    image: formData.get("image"),
+    description: formData.get("description")
+  };
+
+  creatures.push(newCard);
+
+  cardsList(creatures);
+
+  form.reset();
+
+  form.querySelectorAll('input, textarea, select').forEach(input => {
+    input.classList.remove('border-green-500', 'border-red-500');
   });
+  
+
+  console.log("New card added successfully!", newCard);
+});
 
 
   // Add to my cards
@@ -197,7 +225,6 @@ form.addEventListener(`submit`, (event) => {
 });
 
 
-  // دالة الإضافة لفريقك
   function addToMyCards(cardData) {
     const mycardsSection = document.getElementById('mycards');
     if (!mycardsSection || mycardsSection.children.length >= 6) return;
@@ -218,7 +245,7 @@ form.addEventListener(`submit`, (event) => {
         </div>
       </div>
     `;
-    
+
     updateTeamCount();
   }
 
@@ -226,8 +253,9 @@ form.addEventListener(`submit`, (event) => {
     const mycardsSection = document.getElementById('mycards');
     let count = document.querySelectorAll(".team-count");
     if (mycardsSection && count) {
-      count.textContent = mycardsSection.children.length;
+      count.forEach((c) => c.textContent = mycardsSection.children.length);
     }
+
   }
 
   const mycardsSection = document.getElementById('mycards');

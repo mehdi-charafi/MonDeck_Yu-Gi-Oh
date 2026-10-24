@@ -42,15 +42,15 @@
       </label>
 
       <nav class="hidden peer-checked:flex flex-col absolute top-full right-0 z-50 w-64 bg-ink border-2 border-white/10 shadow-xl p-4 space-y-3 rounded-2xl mt-2">
-        <a href="#grid" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">Cards</a>
-        <a href="#team" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">My Cards · <span class="team-count">0</span>/6</a>
+        <a href="#Ccards" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">Cards</a>
+        <a href="#mycards" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">My Cards · <span class="team-count">0</span>/6</a>
         <a href="#create" class="rounded-full bg-white px-4 py-2 font-bold text-ink text-center">+ New Cards</a>
       </nav>
     </div>
 
     <nav aria-label="Navigation principale" class="hidden lg:flex flex-wrap gap-2 items-center">
-      <a href="#grid" class="rounded-full bg-white/10 px-4 py-2">Cards</a>
-      <a href="#team" class="rounded-full bg-white/10 px-4 py-2">My Cards · <span class="team-count">0</span>/6</a>
+      <a href="#Ccards" class="rounded-full bg-white/10 px-4 py-2">Cards</a>
+      <a href="#mycards" class="rounded-full bg-white/10 px-4 py-2">My Cards · <span class="team-count">0</span>/6</a>
       <a href="#create" class="rounded-full bg-white px-4 py-2 font-bold text-ink">+ New Cards</a>
     </nav>
 
@@ -188,8 +188,8 @@
         </div>
 
         <!-- ===================== MON ÉQUIPE (INCOMPLÈTE) ===================== -->
-        <section aria-label="Détail de la créature" class="relative flex flex-col gap-3 rounded-2xl p-4 border border-gray-800 shadow-2xl bg-[#12161c] bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/bg.png')">
-        <h2 class="font-display text-2xl font-extrabold text-white">My Cards</h2>
+        <section aria-label="My cards" class="relative flex flex-col gap-3 rounded-2xl p-4 border border-gray-800 shadow-2xl bg-[#12161c] bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/bg.png')">
+        <h2 class="font-display text-2xl font-extrabold text-white">My Cards <span>(<span class="team-count">0</span>/6</span>)</h2>
           <div id="mycards" class="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1  gap-3">
             
              
@@ -210,39 +210,39 @@
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold text-white">Nom
-          <input name="name" type="text" placeholder="Nom de la créature" class="field font-normal bg-black/50 border border-gray-700">
+          <input name="name" type="text" placeholder="Card Name" class="field font-normal bg-black/50 border border-gray-700">
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold text-white">Type
           <select name="type" class="field font-normal bg-black/50 border border-gray-700">
-            <option value="">Choisir un type</option>
-            <option>Feu</option><option>Eau</option><option>Plante</option>
-            <option>Électrik</option><option>Glace</option><option>Ténèbres</option>
+            <option value="Tous">All Types</option>
+            <option value="Effect">Effect</option>
+            <option value="LIGHT">LIGHT</option>
+            <option value="Fusion">Fusion</option>
+            <option value="DARK">DARK</option>
+            <option value="EARTH">EARTH</option>
+            <option value="WATER">WATER</option>
           </select>
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-bold text-white">Niveau
-          <input name="level" type="text" placeholder="Base, Niveau 1…" class="field font-normal bg-black/50 border border-gray-700">
+        <label class="flex flex-col gap-1 text-sm font-bold text-white">Level
+          <input name="level" type="text" placeholder="Base, Level 1…" class="field font-normal bg-black/50 border border-gray-700">
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-bold text-white">Statistique 1
-          <input name="stat1" type="text" placeholder="0 à 999" class="field font-normal bg-black/50 border border-gray-700">
+        <label class="flex flex-col gap-1 text-sm font-bold text-white">Attack
+          <input name="attack" type="text" placeholder="0 to 5000" class="field font-normal bg-black/50 border border-gray-700">
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-bold text-white">Statistique 2
-          <input name="stat2" type="text" placeholder="0 à 999" class="field font-normal bg-black/50 border border-gray-700">
+        <label class="flex flex-col gap-1 text-sm font-bold text-white">Defence
+          <input name="defence" type="text" placeholder="0 to 5000" class="field font-normal bg-black/50 border border-gray-700">
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
-        <label class="flex flex-col gap-1 text-sm font-bold text-white">Statistique 3
-          <input name="stat3" type="text" placeholder="0 à 999" class="field font-normal bg-black/50 border border-gray-700">
-          <span class="error-message text-sm font-normal text-muted"></span>
-        </label>
-        <label class="flex flex-col gap-1 text-sm font-bold text-white">Lien de l'image
+        <label class="flex flex-col gap-1 text-sm font-bold text-white">Image Link
           <input name="image" type="text" placeholder="https://…/image.png" class="field font-normal bg-black/50 border border-gray-700">
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold md:col-span-2 lg:col-span-4 text-white">Description
-          <textarea name="description" rows="3" placeholder="10 à 200 caractères" class="rounded-xl p-3 font-normal outline-none bg-black/50 border border-gray-700"></textarea>
+          <textarea name="description" rows="3" placeholder="10 to 200 characters" class="rounded-xl p-3 font-normal outline-none bg-black/50 border border-gray-700"></textarea>
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <div class="flex flex-wrap justify-center gap-3 md:col-span-2 lg:col-span-4">
@@ -254,8 +254,8 @@
 
   </main>
 
-  <footer class="mx-auto max-w-7xl px-8 pb-10 text-sm text-muted">
-    Images : [source des images de votre univers]. Projet de fans réalisé dans le cadre d'une formation.
+  <footer class="mx-auto max-w-7xl px-8 pb-10 text-sm text-muted text-white">
+    Images : ygoprodeck.com. Fan project created as part of a training program.
   </footer>
 
   <!-- data.js (à créer) doit être chargé AVANT script.js -->
