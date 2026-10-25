@@ -1,31 +1,22 @@
+let SavedDeck = JSON.parse(localStorage.getItem('mydeck')) || [];
+let SavedCardsList = JSON.parse(localStorage.getItem(`cardslist`)) || [];
+renderDeck(); 
+updateTeamCount();
+
+
+
 // Cards List
 const cards = document.querySelector("#Ccards");
-cardsList(creatures)
-
-
-//filter
-let filter = document.querySelector("#filter")
-filter.addEventListener("change", (event) => {
-  if(event.target.value == "Tous") {
-    cardsList(creatures)
-  } else {
-    let filterValue = creatures.filter((c) => c.type == event.target.value)
-    cardsList(filterValue)
-  }
-})
-
-//search
-let search = document.querySelector("#search")
-search.addEventListener("input", (event) => {
-  let query = event.target.value.toLowerCase().trim();
-let match = creatures.filter((c) => c.name.toLowerCase().includes(query));
-cardsList(match);
-})
+if(SavedCardsList.length == 0) {
+creatures.forEach((c) => SavedCardsList.push(c))
+localStorage.setItem(`cardslist`, JSON.stringify(SavedCardsList))
+}
+cardsList(SavedCardsList)
 
 //cardsList Function
 function cardsList(data) {
 
-if (cards && typeof creatures !== 'undefined') {
+if (cards) {
   cards.innerHTML = "";
 
   data.forEach(c => {
@@ -44,6 +35,28 @@ if (cards && typeof creatures !== 'undefined') {
 })};
 }
 
+
+//filter
+let filter = document.querySelector("#filter")
+filter.addEventListener("change", (event) => {
+  if(event.target.value == "Tous") {
+    cardsList(SavedCardsList)
+  } else {
+    let filterValue = SavedCardsList.filter((c) => c.type == event.target.value)
+    cardsList(filterValue)
+  }
+})
+
+//search
+let search = document.querySelector("#search")
+search.addEventListener("input", (event) => {
+  let query = event.target.value.toLowerCase().trim();
+let match = SavedCardsList.filter((c) => c.name.toLowerCase().includes(query));
+cardsList(match);
+})
+
+
+
 // show card detail
 
   cards.addEventListener('click', (event) => {
@@ -55,7 +68,7 @@ if (cards && typeof creatures !== 'undefined') {
     if (!article) return;
 
     const cardId = article.querySelector('span').textContent
-    const selectedCard = creatures.find(c => c.id === cardId);
+    const selectedCard = SavedCardsList.find(c => c.id === cardId);
 
     if (selectedCard) {
       showCardDetails(selectedCard);
@@ -188,9 +201,10 @@ form.addEventListener(`submit`, (event) => {
     description: formData.get("description")
   };
 
-  creatures.push(newCard);
+  SavedCardsList.push(newCard);
+  localStorage.setItem(`cardslist`, JSON.stringify(SavedCardsList))
 
-  cardsList(creatures);
+  cardsList(SavedCardsList);
 
   form.reset();
 
@@ -199,7 +213,7 @@ form.addEventListener(`submit`, (event) => {
   });
   
   let Ccounts = document.querySelector("#cards-count")
-  Ccounts.textContent = Object.keys(creatures).length
+  Ccounts.textContent = Object.keys(SavedCardsList).length
 
   console.log("New card added successfully!", newCard);
 });
@@ -215,7 +229,7 @@ form.addEventListener(`submit`, (event) => {
       if (!article) return;
 
       const cardId = article.querySelector('span').textContent
-      const selectedCard = creatures.find(c => c.id == cardId)
+      const selectedCard = SavedCardsList.find(c => c.id == cardId)
 
       if (selectedCard) {
         addToMyCards(selectedCard)
@@ -235,21 +249,35 @@ form.addEventListener(`submit`, (event) => {
     const isAlreadyAdded = Array.from(existingCards).some((d) => d.querySelector("span").textContent.includes(cardData.id));
     if (isAlreadyAdded) return;
     
-    mycardsSection.innerHTML += `
-       <div id="card-item" class="w-full min-h-[220px] border border-gray-700 rounded-lg p-2"> 
-        <div class="flex items-center justify-between relative z-10">
-          <span class="font-mono text-xs font-bold text-yellow-400 bg-black/70 px-2.5 py-1 rounded border border-yellow-500/30">${cardData.id} · Détail</span>
-          <button type="button" aria-label="Remove card" class="w-8 h-8 flex items-center justify-center text-white bg-black/50 hover:bg-black/80 rounded-full transition-colors cursor-pointer">✕</button>
-        </div>
+    SavedDeck.push(cardData)
+    
+    localStorage.setItem(`mydeck`, JSON.stringify(SavedDeck))
 
-        <div class="relative flex items-center justify-center rounded-xl overflow-hidden z-10">
-          <img src="${cardData.image}" alt="${cardData.name}" class="w-full h-auto object-contain rounded-lg">
-        </div>
-      </div>
-    `;
-
+    renderDeck(); 
     updateTeamCount();
   }
+
+  function renderDeck() {
+    const mycardsSection = document.getElementById('mycards');
+    if (!mycardsSection) return;
+    
+    mycardsSection.innerHTML = ""; 
+    
+    SavedDeck.forEach(cardData => {
+        mycardsSection.innerHTML += `
+           <div id="card-item" class="w-full min-h-[220px] border border-gray-700 rounded-lg p-2" data-id="${cardData.id}"> 
+            <div class="flex items-center justify-between relative z-10">
+              <span class="font-mono text-xs font-bold text-yellow-400 bg-black/70 px-2.5 py-1 rounded border border-yellow-500/30">${cardData.id} · Détail</span>
+              <button type="button" aria-label="Remove card" class="remove-btn w-8 h-8 flex items-center justify-center text-white bg-black/50 hover:bg-black/80 rounded-full transition-colors cursor-pointer">✕</button>
+            </div>
+
+            <div class="relative flex items-center justify-center rounded-xl overflow-hidden z-10">
+              <img src="${cardData.image}" alt="${cardData.name}" class="w-full h-auto object-contain rounded-lg" loading="lazy">
+            </div>
+          </div>
+        `;
+    });
+}
 
   function updateTeamCount() {
     const mycardsSection = document.getElementById('mycards');
@@ -268,7 +296,10 @@ form.addEventListener(`submit`, (event) => {
 
       const cardItem = removeBtn.closest('#card-item');
       if (cardItem) {
-        cardItem.remove();
+        const cardId = cardItem.getAttribute('data-id');
+        SavedDeck = SavedDeck.filter((c) => c.id != cardId)
+        localStorage.setItem(`mydeck`, JSON.stringify(SavedDeck))
+        renderDeck(SavedDeck)
         updateTeamCount();
       }
     });
