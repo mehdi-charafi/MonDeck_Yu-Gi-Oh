@@ -1,8 +1,6 @@
-# Mon Dex — dépôt de départ
+# Mon Dex — Yu-Gi-Oh! Edition
 
-Sprint 2 — Brief 1. Une page Tailwind **statique** à rendre interactive avec JavaScript, pour l'univers de votre choix : Pokémon, Digimon ou Yu-Gi-Oh!.
-
-Lisez le brief complet avant de commencer.
+Projet réalisé dans le cadre de la formation (Sprint 2 — Brief 1). Une encyclopédie interactive des cartes Yu-Gi-Oh! optimisée pour mobile et desktop.
 
 ## Installation
 
@@ -27,18 +25,51 @@ Puis committez `dist/output.css` : GitHub Pages ne lance pas Tailwind pour vous.
 
 | Fichier | Rôle |
 | --- | --- |
-| `index.html` | La page Dex, statique, avec 6 cartes écrites à la main |
-| `tailwind.config.js` | Le thème neutre à remplacer par celui de votre univers |
-| `src/input.css` | Les directives Tailwind et quelques classes de composants |
-| `dist/output.css` | Le CSS généré par Tailwind (ne pas modifier à la main) |
-| `data.js` | Le tableau `creatures`, à remplir avec au moins 12 créatures |
-| `script.js` | Votre JavaScript, avec la liste des fonctionnalités à coder |
+| `index.html` | La page Dex, interactive, avec les cartes Yu-Gi-Oh! |
+| `tailwind.config.js` | Le thème personnalisé pour l'univers Yu-Gi-Oh! |
+| `src/input.css` | Les directives Tailwind et classes de composants |
+| `dist/output.css` | Le CSS généré par Tailwind |
+| `data.js` | Le tableau creatures avec les monstres de Yu-Gi-Oh! |
+| `script.js` | Le code JavaScript (Affichage, Recherche, Filtre, Formulaire, Équipe, Validation) |
 | `design/` | La maquette de la version finale |
 
-## À compléter par vous
+## Informations du Projet
 
-- **Univers choisi :** [Pokémon / Digimon / Yu-Gi-Oh!]
-- **Lien GitHub Pages :** [lien]
-- **Sources des images :** [liens]
-- **Tests des expressions régulières :** [collez ici vos tests console : 2 valeurs valides et 2 invalides par expression]
-- **Bonus réalisés :** [liste]
+Univers choisi | Yu-Gi-Oh!   
+Lien GitHub Pages | [https://mehdi-charafi.github.io/MonDeck_Yu-Gi-Oh/]   
+Sources des images | YGOPRODeck (ygoprodeck.com)  
+
+## Tests des expressions régulières (Regex) : 
+
+// 1. ID (#000)
+regex.test("#010") // ➔ true (Valide)
+regex.test("#123") // ➔ true (Valide)
+regex.test("010")  // ➔ false (Invalide)
+regex.test("#12")  // ➔ false (Invalide)
+
+// 2. Nom (2 à 30 caractères, lettres et espaces)
+regex.test("Dark Magician") // ➔ true (Valide)
+regex.test("Gaia")          // ➔ true (Valide)
+regex.test("M123")          // ➔ false (Invalide)
+regex.test("A")             // ➔ false (Invalide)
+
+// 3. Type (Liste fixe)
+regex.test("LIGHT")  // ➔ true (Valide)
+regex.test("Effect") // ➔ true (Valide)
+regex.test("")       // ➔ false (Invalide)
+
+// 4. Statistiques (0 à 5000)
+regex.test("0")    // ➔ true (Valide)
+regex.test("2500") // ➔ true (Valide)
+regex.test("5001") // ➔ false (Invalide)
+regex.test("-5")   // ➔ false (Invalide)
+
+// 5. Image (Lien HTTP/HTTPS valide)
+regex.test("[https://images.ygoprodeck.com/images/cards/1.jpg](https://images.ygoprodeck.com/images/cards/1.jpg)") // ➔ true (Valide)
+regex.test("[http://example.com/card.png](http://example.com/card.png)")                    // ➔ true (Valide)
+regex.test("[www.google.com](https://www.google.com)")                                 // ➔ false (Invalide)
+regex.test("image.jpg")                                      // ➔ false (Invalide)
+
+// 6. Description (10 à 200 caractères)
+regex.test("This is a powerful monster card.") // ➔ true (Valide)
+regex.test("Short")                            // ➔ false (Invalide)

@@ -98,7 +98,8 @@ const form = document.querySelector(`#creature-form`);
 
 const regexPatterns = {
     id: /^#\d{3}$/,                  
-    name: /^[a-zA-Z\s]{2,30}$/,   
+    name: /^[a-zA-Z\s]{2,30}$/, 
+    type: /^(Effect|LIGHT|Fusion|DARK|EARTH|WATER)$/,  
     level: /^([0-9]|1[0-2])$/,  
     attack: /^([0-9]|[1-9][0-9]{1,2}|[1-4][0-9]{3}|5000)$/,              
     defence: /^([0-9]|[1-9][0-9]{1,2}|[1-4][0-9]{3}|5000)$/,
@@ -110,10 +111,9 @@ const errorMessages = {
     id: "The format must be # followed by 3 digits (e.g., #010)",
     name: "The name must contain only letters (2-30 characters).",
     level: "Please enter a valid level.",
-    stat1: "The statistic must be a number between 0 and 999.",
-    stat2: "The statistic must be a number between 0 and 999.",
-    stat3: "The statistic must be a number between 0 and 999.",
-    image: "Please enter a valid image link (starting with https://).",
+    attack: "The attack must be a number between 0 and 5000.",
+    defence: "The defence must be a number between 0 and 5000.",
+    image: "Please enter a valid image link (starting with https:// and ending with a valid image format).",
     description: "The description must contain between 10 and 200 characters."
 };
 
@@ -198,6 +198,8 @@ form.addEventListener(`submit`, (event) => {
     input.classList.remove('border-green-500', 'border-red-500');
   });
   
+  let Ccounts = document.querySelector("#cards-count")
+  Ccounts.textContent = Object.keys(creatures).length
 
   console.log("New card added successfully!", newCard);
 });
