@@ -55,7 +55,22 @@ let match = SavedCardsList.filter((c) => c.name.toLowerCase().includes(query));
 cardsList(match);
 })
 
-
+//sort
+let sort = document.querySelector("#sort")
+sort.addEventListener('change', (event) => {
+   let value = event.target.value
+   let sorted = [...SavedCardsList]
+   if(value != "id") {
+    sorted.sort((a, b) => {
+      let valA = (value === "attack" || value === "defence") ? Number(a.stats[value]) : Number(a[value]);
+           let valB = (value === "attack" || value === "defence") ? Number(b.stats[value]) : Number(b[value]);
+           
+           return valB - valA; 
+    })
+   
+    cardsList(sorted)
+   } else if (value == "id") cardsList(SavedCardsList)
+})
 
 // show card detail
 

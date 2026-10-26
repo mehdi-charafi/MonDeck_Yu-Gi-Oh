@@ -43,14 +43,14 @@
 
       <nav class="hidden peer-checked:flex flex-col absolute top-full right-0 z-50 w-64 bg-ink border-2 border-white/10 shadow-xl p-4 space-y-3 rounded-2xl mt-2">
         <a href="#Ccards" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">Cards</a>
-        <a href="#mycards" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">My Cards · <span class="team-count">0</span>/6</a>
+        <a href="#mycards" class="rounded-full bg-white/10 px-4 py-2 text-center text-white">My Deck · <span class="team-count">0</span>/6</a>
         <a href="#create" class="rounded-full bg-white px-4 py-2 font-bold text-ink text-center">+ New Cards</a>
       </nav>
     </div>
 
     <nav aria-label="Navigation principale" class="hidden lg:flex flex-wrap gap-2 items-center">
       <a href="#Ccards" class="rounded-full bg-white/10 px-4 py-2">Cards</a>
-      <a href="#mycards" class="rounded-full bg-white/10 px-4 py-2">My Cards · <span class="team-count">0</span>/6</a>
+      <a href="#mycards" class="rounded-full bg-white/10 px-4 py-2">My Deck · <span class="team-count">0</span>/6</a>
       <a href="#create" class="rounded-full bg-white px-4 py-2 font-bold text-ink">+ New Cards</a>
     </nav>
 
@@ -59,7 +59,7 @@
 
   <main class="mx-auto flex max-w-7xl flex-col gap-8 px-8 py-8">
 
-    <!-- ===================== RECHERCHE ET FILTRES ===================== -->
+    <!-- ===================== RECHERCHE ET FILTRES ET SORT ===================== -->
     <section aria-label="Recherche et filtres" class="flex flex-col gap-4 md:ml-31">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <h1 class="font-display text-3xl font-extrabold text-white">Choose your cards</h1>
@@ -68,20 +68,29 @@
           <input id="search" type="search" placeholder="ex. Mossling" class="field font-normal bg-[#12161c] text-white border border-gray-700">
         </label>
       </div>
-      <div id="filters" role="group" aria-label="Filtrer par type">
+
+      <div id="filters" role="group" aria-label="Filtrer par type" class=" flex gap-3">
   
 
-  <div class="block w-full md:w-113">
-    <select id="filter" class="field w-full font-normal bg-[#12161c] text-white border border-gray-700">
-      <option value="Tous">All Types</option>
-      <option value="Effect">Effect</option>
-      <option value="LIGHT">LIGHT</option>
-      <option value="Fusion">Fusion</option>
-      <option value="DARK">DARK</option>
-      <option value="EARTH">EARTH</option>
-      <option value="WATER">WATER</option>
-    </select>
-  </div>
+        <div class="block w-full md:w-113">
+          <select id="filter" class="field w-full font-normal bg-[#12161c] text-white border border-gray-700">
+          <option value="Tous">All Types</option>
+          <option value="Effect">Effect</option>
+          <option value="LIGHT">LIGHT</option>
+          <option value="Fusion">Fusion</option>
+          <option value="DARK">DARK</option>
+          <option value="EARTH">EARTH</option>
+          <option value="WATER">WATER</option>
+          </select>
+        </div>
+        <div class="sort block w-full md:w-113">
+          <select id="sort" class="field w-full font-normal bg-[#12161c] text-white border border-gray-700">
+            <option value="id">Sort By ID</option>
+            <option value="level">Sort By Level</option>
+            <option value="attack">Sort By Attack</option>
+            <option value="defence">Sort By Defence</option>
+          </select>
+        </div>
 
 
   
@@ -189,7 +198,7 @@
 
         <!-- ===================== MON ÉQUIPE (INCOMPLÈTE) ===================== -->
         <section aria-label="My cards" class="relative flex flex-col gap-3 rounded-2xl p-4 border border-gray-800 shadow-2xl bg-[#12161c] bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/bg.png')">
-        <h2 class="font-display text-2xl font-extrabold text-white">My Cards <span>(<span class="team-count">0</span>/6</span>)</h2>
+        <h2 class="font-display text-2xl font-extrabold text-white">My Deck <span>(<span class="team-count">0</span>/6</span>)</h2>
           <div id="mycards" class="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1  gap-3">
             
              
