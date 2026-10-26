@@ -52,10 +52,14 @@ filter.addEventListener("change", (event) => {
 
 //search
 let search = document.querySelector("#search")
+let filterSelect = document.querySelector("#filter");
+let sortSelect = document.querySelector("#sort");
 search.addEventListener("input", (event) => {
   let query = event.target.value.toLowerCase().trim();
 let match = SavedCardsList.filter((c) => c.name.toLowerCase().includes(query));
 cardsList(match);
+if (filterSelect) filterSelect.value = "Tous"; 
+if (sortSelect) sortSelect.value = "id";
 })
 
 //sort
