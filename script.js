@@ -38,12 +38,15 @@ if (cards) {
 
 //filter
 let filter = document.querySelector("#filter")
+let enabledFilter = false
+let filterValue = []
 filter.addEventListener("change", (event) => {
   if(event.target.value == "Tous") {
     cardsList(SavedCardsList)
   } else {
-    let filterValue = SavedCardsList.filter((c) => c.type == event.target.value)
+    filterValue = SavedCardsList.filter((c) => c.type == event.target.value)
     cardsList(filterValue)
+    enabledFilter = true
   }
 })
 
@@ -59,7 +62,12 @@ cardsList(match);
 let sort = document.querySelector("#sort")
 sort.addEventListener('change', (event) => {
    let value = event.target.value
-   let sorted = [...SavedCardsList]
+   let sorted = []
+   if(enabledFilter == true) {
+    sorted = [...filterValue]
+   } else {
+    sorted = [...SavedCardsList]
+   }
    if(value != "id") {
     sorted.sort((a, b) => {
       let valA = (value === "attack" || value === "defence") ? Number(a.stats[value]) : Number(a[value]);
@@ -69,7 +77,7 @@ sort.addEventListener('change', (event) => {
     })
    
     cardsList(sorted)
-   } else if (value == "id") cardsList(SavedCardsList)
+   } else if (value == "id") cardsList(sorted)
 })
 
 // show card detail
