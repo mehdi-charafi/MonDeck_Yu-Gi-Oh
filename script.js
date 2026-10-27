@@ -137,7 +137,7 @@ function showCardDetails(cardData) {
 const form = document.querySelector(`#creature-form`);
 
 const regexPatterns = {
-    id: /^#\d{3}$/,                  
+    id: /^#\d+$/,                  
     name: /^[a-zA-Z\s]{2,30}$/, 
     type: /^(Effect|LIGHT|Fusion|DARK|EARTH|WATER)$/,  
     level: /^([0-9]|1[0-2])$/,  
@@ -148,7 +148,7 @@ const regexPatterns = {
 };
 
 const errorMessages = {
-    id: "The format must be # followed by 3 digits (e.g., #010)",
+    id: "The format must be # followed by 3 digits (e.g., #010...)",
     name: "The name must contain only letters (2-30 characters).",
     level: "Please enter a valid level.",
     attack: "The attack must be a number between 0 and 5000.",
@@ -331,3 +331,53 @@ form.addEventListener(`submit`, (event) => {
       }
     });
   }
+
+
+  // Roll A Card 
+let callBtn = document.querySelector("#rollbtn");
+
+callBtn.addEventListener("click", async () => {
+    try {
+   
+         let response = await fetch(`cards.json`)
+         let data = await response.json()
+        
+         let allCards = data.data;
+        
+         let randomIndex = Math.round(Math.random() * allCards.length)
+         let cardinfo = allCards[randomIndex]
+
+        let newCard = {
+            id: "#" + cardinfo.id,
+            name: cardinfo.name,
+            type: cardinfo.type,
+            level: cardinfo.level || "---",
+            stats: { 
+                attack: cardinfo.atk !== undefined ? cardinfo.atk : "---", 
+                defence: cardinfo.def !== undefined ? cardinfo.def : "---" 
+            },
+            image: cardinfo.card_images[0].image_url,
+            description: cardinfo.desc || "No Description"
+        };
+
+        SavedCardsList.push(newCard);
+        localStorage.setItem("cardslist", JSON.stringify(SavedCardsList));
+                
+        cardsList(SavedCardsList);
+
+        console.log("The card is added!");
+        
+    } catch (error) {
+        console.error("The roll is failed ", error.message);
+        alert("Error: " + error.message);
+    }
+});
+
+
+// rest your data
+let resetBtn = document.querySelector("#resetbtn") 
+
+resetBtn.addEventListener("click", () => {
+  localStorage.clear()
+  location.reload()
+})
